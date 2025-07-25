@@ -45,6 +45,6 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}  # Token is optional for public repos
+          token: ${{ secrets.CODECOV_TOKEN }}
           file: coverage.txt
           slug: felipegenef/post-graduation-exercise-rate-limiter
