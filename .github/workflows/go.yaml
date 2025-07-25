@@ -1,0 +1,36 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.23'
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Run tests and generate coverage report
+        run: |
+          go test ./test/... -v -coverprofile=coverage.txt -coverpkg=./limiter,./middleware
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}  # Token is optional for public repos
+          file: coverage.txt  # Ensure you specify the coverage file to upload
+          slug: felipegenef/post-graduation-exercise-rate-limiter  # Optional, Codecov will auto-detect this from the repo
